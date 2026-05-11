@@ -1,0 +1,19 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@import "@fontsource-variable/geist";
+
+:root {
+  --bg: #1e1b4b;
+  --surface: #2d2a6e;
+  --primary: #7c3aed;
+  --border: rgba(167, 139, 250, 0.2);
+
+  --background: #1e1b4b;
+}
+
+html, body, #root {
+  background-color: var(--bg) !important;
+  min-height: 100vh;
+  color: white;
+}
