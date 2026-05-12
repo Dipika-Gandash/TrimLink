@@ -1,7 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 @import "@fontsource-variable/geist";
+
 
 :root {
   --bg: #1e1b4b;
@@ -16,4 +19,10 @@ html, body, #root {
   background-color: var(--bg) !important;
   min-height: 100vh;
   color: white;
+}
+
+
+
+@theme {
+  --font-mont: "Montserrat", sans-serif;
 }
