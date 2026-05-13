@@ -1,4 +1,3 @@
-
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import {
@@ -145,6 +144,5 @@ const Header = () => {
     </header>
   );
 };
-
 
 export default Header;
