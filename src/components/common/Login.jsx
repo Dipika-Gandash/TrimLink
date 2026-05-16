@@ -1,6 +1,5 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -10,10 +9,15 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-
 import { loginSchema } from "@/schema/loginSchema";
+import useFetch from "@/hooks/useFetch";
+import { logIn } from "@/lib/apiAuth";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 const Login = () => {
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const createNew = searchParams.get("createNew");
 
   const {
     register,
@@ -27,9 +31,18 @@ const Login = () => {
     },
   });
 
-  const onSubmit = async (data) => {
-    console.log(data);
+   const { data, loading, error, fn:loginFn } = useFetch(logIn);
 
+  const onSubmit = async (formData) => {
+   const res = await loginFn(formData);
+
+   if(res?.user){
+     navigate(
+        createNew
+          ? `/dashboard?createNew=${encodeURIComponent(createNew)}`
+          : "/dashboard"
+      );
+   }
   };
 
   return (
@@ -87,12 +100,18 @@ const Login = () => {
 
           </div>
 
+           {error && (
+            <p className="text-sm text-center text-red-400">
+              {error}
+            </p>
+          )}
+
           <Button
             type="submit"
-            disabled={isSubmitting}
+            disabled={loading}
             className="w-full bg-violet-600 hover:bg-violet-700"
           >
-            {isSubmitting ? "Logging in..." : "Login"}
+            {loading ? "Logging in..." : "Login"}
           </Button>
 
         </form>
