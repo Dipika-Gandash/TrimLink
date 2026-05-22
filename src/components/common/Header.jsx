@@ -7,24 +7,14 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/components/ui/avatar";
-import {
-  Scissors,
-  Link2,
-  LogOut,
-  Zap,
-  ChevronDown,
-} from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Scissors, Link2, LogOut, Zap, ChevronDown } from "lucide-react";
+import useAuth from "@/hooks/useAuth";
 
 const Header = () => {
   const navigate = useNavigate();
 
-  const user = true;
-
+  const { user, profile, loading } = useAuth();
   return (
     <header className="sticky top-0 z-50 border-b border-violet-500/10 bg-[#120f2c]/95 backdrop-blur">
       <nav className="mx-auto flex h-17 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
@@ -42,7 +32,9 @@ const Header = () => {
         </Link>
 
         <div className="flex items-center gap-3">
-          {!user ? (
+          {loading ? (
+            <div className="h-10 w-28"></div>
+          ) : !user ? (
             <>
               <Button
                 variant="outline"
@@ -73,15 +65,15 @@ const Header = () => {
                 <DropdownMenuTrigger asChild>
                   <button className="flex items-center gap-2 rounded-full border border-violet-400/20 bg-violet-400/5 px-2 py-1 transition-colors hover:bg-violet-400/10 focus:outline-none">
                     <Avatar className="h-8 w-8">
-                      <AvatarImage src="https://github.com/shadcn.png" />
+                      <AvatarImage src={profile?.profile_image} />
 
-                      <AvatarFallback className="bg-violet-600 text-xs font-semibold text-white">
-                        DK
+                      <AvatarFallback>
+                        {profile?.name?.slice(0, 2)}
                       </AvatarFallback>
                     </Avatar>
 
                     <span className="hidden text-sm font-medium text-violet-100 sm:block">
-                      Dipika
+                      {user ? "" : ""}
                     </span>
 
                     <ChevronDown
@@ -95,25 +87,22 @@ const Header = () => {
                   align="end"
                   className="w-56 rounded-2xl border border-violet-400/15 bg-[#1a1638] p-2 text-white shadow-2xl"
                 >
-                  
                   <div className="mb-2 border-b border-violet-400/10 px-2 pb-3">
                     <div className="flex items-center gap-3">
                       <Avatar className="h-10 w-10">
-                        <AvatarImage src="https://github.com/shadcn.png" />
+                        <AvatarImage src={profile?.profile_image} />
 
-                        <AvatarFallback className="bg-violet-600 text-white">
-                          DK
+                        <AvatarFallback>
+                          {profile?.name?.slice(0, 2)}
                         </AvatarFallback>
                       </Avatar>
 
                       <div>
                         <p className="text-sm font-semibold text-white">
-                          Dipika
+                          {profile?.name}
                         </p>
 
-                        <p className="text-xs text-violet-300">
-                          dipika@email.com
-                        </p>
+                        <p className="text-xs text-violet-300">{user?.email}</p>
                       </div>
                     </div>
                   </div>
@@ -127,7 +116,6 @@ const Header = () => {
                       My Links
                     </DropdownMenuItem>
                   </DropdownMenuGroup>
-
 
                   <div className="mt-2 border-t border-violet-400/10 pt-2">
                     <DropdownMenuItem className="cursor-pointer rounded-lg text-red-400 focus:bg-red-500/10 focus:text-red-300">

@@ -5,6 +5,8 @@ import Dashboard from "./pages/Dashboard";
 import Auth from "./pages/Auth";
 import Link from "./pages/Link";
 import RedirectLink from "./pages/RedirectLink";
+import ProtectedRoutes from "./routes/ProtectedRoutes";
+import PublicRoutes from "./routes/PublicRoutes";
 
 const router = createBrowserRouter([
   {
@@ -16,19 +18,35 @@ const router = createBrowserRouter([
       },
       {
         path: "/dashboard",
-        element: <Dashboard />
+        element: (
+          <ProtectedRoutes>
+            <Dashboard />
+          </ProtectedRoutes>
+        )
       },
       {
         path: "/auth",
-        element: <Auth />
+        element: (
+          <PublicRoutes>
+            <Auth />
+          </PublicRoutes>
+        )
       },
       {
         path: "/link/:id",
-        element: <Link />
+        element: (
+          <ProtectedRoutes>
+            <Link />
+          </ProtectedRoutes>
+        )
       },
       {
         path: "/:id",
-        element: <RedirectLink />
+        element: (
+          <ProtectedRoutes>
+            <RedirectLink />
+          </ProtectedRoutes>
+        )
       }
     ],
   },

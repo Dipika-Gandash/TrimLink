@@ -12,7 +12,7 @@ import { Input } from "@/components/ui/input";
 import { loginSchema } from "@/schema/loginSchema";
 import useFetch from "@/hooks/useFetch";
 import { logIn } from "@/lib/apiAuth";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { replace, useNavigate, useSearchParams } from "react-router-dom";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -22,7 +22,7 @@ const Login = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -41,7 +41,7 @@ const Login = () => {
         createNew
           ? `/dashboard?createNew=${encodeURIComponent(createNew)}`
           : "/dashboard"
-      );
+      , replace);
    }
   };
 
