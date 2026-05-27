@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, replace, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -10,11 +10,24 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Scissors, Link2, LogOut, Zap, ChevronDown } from "lucide-react";
 import useAuth from "@/hooks/useAuth";
+import useFetch from "@/hooks/useFetch";
+import { logOut } from "@/lib/apiAuth";
 
 const Header = () => {
   const navigate = useNavigate();
 
-  const { user, profile, loading } = useAuth();
+  const { user, profile, loading : authLoading} = useAuth();
+  const { loading: logoutLoading, error, fn } = useFetch(logOut);
+
+  const handleLogout = async () => {
+    try {
+      await fn();
+      (navigate("/auth"), { replace: true });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <header className="sticky top-0 z-50 border-b border-violet-500/10 bg-[#120f2c]/95 backdrop-blur">
       <nav className="mx-auto flex h-17 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
@@ -32,7 +45,7 @@ const Header = () => {
         </Link>
 
         <div className="flex items-center gap-3">
-          {loading ? (
+          {authLoading ? (
             <div className="h-10 w-28"></div>
           ) : !user ? (
             <>
@@ -53,13 +66,13 @@ const Header = () => {
             </>
           ) : (
             <>
-              <button
+              <Button
                 onClick={() => navigate("/dashboard")}
                 className="hidden items-center gap-2 rounded-full border border-violet-400/20 bg-violet-500/10 px-4 py-2 text-sm font-medium text-violet-300 transition-all hover:bg-violet-500/20 md:flex"
               >
                 <Zap size={14} />
                 New Link
-              </button>
+              </Button>
 
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -73,7 +86,7 @@ const Header = () => {
                     </Avatar>
 
                     <span className="hidden text-sm font-medium text-violet-100 sm:block">
-                      {user ? "" : ""}
+                      {profile?.name}
                     </span>
 
                     <ChevronDown
@@ -118,9 +131,10 @@ const Header = () => {
                   </DropdownMenuGroup>
 
                   <div className="mt-2 border-t border-violet-400/10 pt-2">
-                    <DropdownMenuItem className="cursor-pointer rounded-lg text-red-400 focus:bg-red-500/10 focus:text-red-300">
+                    <DropdownMenuItem className="cursor-pointer rounded-lg text-red-400 focus:bg-red-500/10 focus:text-red-300"
+                    onClick={handleLogout} disabled={logoutLoading}>
                       <LogOut className="mr-2 h-4 w-4" />
-                      Log Out
+                      {logoutLoading ? "Logging out..." : "Log Out"}
                     </DropdownMenuItem>
                   </div>
                 </DropdownMenuContent>

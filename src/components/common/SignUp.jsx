@@ -15,7 +15,7 @@ import { Input } from "@/components/ui/input";
 import { signUpSchema } from "@/schema/signUpSchema";
 import useFetch from "@/hooks/useFetch";
 import { signUp } from "@/lib/apiAuth";
-import { replace, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -39,7 +39,7 @@ const SignUp = () => {
     const result = await fnSignUp(formData);
 
     if (result) {
-      navigate("/dashboard", replace);
+      navigate("/dashboard", { replace: true });
     }
   };
 
