@@ -122,11 +122,11 @@ const Header = () => {
 
                   <DropdownMenuGroup>
                     <DropdownMenuItem
-                      onClick={() => navigate("/links")}
+                      onClick={() => navigate("/dashboard")}
                       className="cursor-pointer rounded-lg text-violet-200 focus:bg-violet-500/10 focus:text-white"
                     >
                       <Link2 className="mr-2 h-4 w-4" />
-                      My Links
+                     My Links
                     </DropdownMenuItem>
                   </DropdownMenuGroup>
 
