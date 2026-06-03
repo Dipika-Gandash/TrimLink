@@ -12,3 +12,4 @@ export const getClicksForUrl = async (urlId) => {
 
     return data;
 };
+
