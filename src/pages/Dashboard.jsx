@@ -6,9 +6,11 @@ import useAuth from "@/hooks/useAuth";
 import useFetch from "@/hooks/useFetch";
 import LinkCard from "@/components/common/LinkCard";
 import { getUrlsWithClickCounts } from "@/lib/apiUrls";
+import CreateLinkModal from "@/components/common/CreateLink";
 
 const Dashboard = () => {
   const [searchQuery, setSearchQuery] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false); 
   const { user } = useAuth();
 
   const {
@@ -52,10 +54,14 @@ const Dashboard = () => {
           </p>
         </div>
 
-        <button className="flex items-center justify-center gap-2 bg-white text-black px-5 py-3 rounded-xl font-semibold hover:scale-[1.02] transition-all">
+                <button
+          onClick={() => setIsModalOpen(true)}
+          className="flex items-center justify-center gap-2 bg-white text-black px-5 py-3 rounded-xl font-semibold hover:scale-[1.02] transition-all"
+        >
           <Plus size={18} />
           Create New Link
         </button>
+
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-8">
@@ -126,9 +132,14 @@ const Dashboard = () => {
             {searchQuery ? "No links match your search." : "No links yet. Create your first one!"}
           </p>
         ) : (
-          filteredUrls.map((url) => <LinkCard key={url.id} card={url} />)
+          filteredUrls.map((url) => <LinkCard key={url.id} card={url} userId={user?.id} refreshUrls={() => fnUrls(user.id)}/>)
         )}
       </div>
+       <CreateLinkModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onCreated={() => fnUrls(user.id)}
+      />
     </div>
   );
 };
